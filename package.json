@@ -1,6 +1,6 @@
 {
   "name": "claude-code-viz",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Local web dashboard for your Claude Code data (~/.claude) — usage & cost analytics, session replay, activity heatmap. 100% local & read-only.",
   "keywords": [
     "claude",

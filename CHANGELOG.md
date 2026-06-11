@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.0 — 2026-06-11
+
+### Memory page
+
+- New **Memory** section visualizing Claude Code's file-based memory (`projects/*/memory/*.md`)
+- **Obsidian-style interactive knowledge graph** (default view): live force simulation, draggable nodes, cursor-anchored zoom and pan, glowing nodes sized by file size + link degree and colored by memory type, labels that fade in with zoom, hover highlights a node's neighborhood
+- Cards view grouped by project with MEMORY.md index health (orphan entries, unindexed files)
+- Memory detail slide-over: markdown rendering with **clickable `[[wiki-links]]`**, backlinks, and a deep-link from `originSessionId` into the session replay
+- Tolerant frontmatter parser (handles colons in values, nested `metadata:` blocks, files without frontmatter); `[[link]]` resolution by frontmatter name or filename stem, cross-project
+- Same guarantees as everything else: read-only, path-traversal-guarded body endpoint, secrets redacted server-side
+
 ## 0.1.0 — 2026-06-11
 
 Initial release.
