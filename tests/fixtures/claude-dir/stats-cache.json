@@ -1,0 +1,24 @@
+{
+  "version": 4,
+  "lastComputedDate": "2026-06-03",
+  "dailyActivity": [
+    {
+      "date": "2026-06-01",
+      "messageCount": 40,
+      "sessionCount": 1,
+      "toolCallCount": 12
+    },
+    {
+      "date": "2026-06-02",
+      "messageCount": 10,
+      "sessionCount": 1,
+      "toolCallCount": 3
+    },
+    {
+      "date": "2026-06-03",
+      "messageCount": 25,
+      "sessionCount": 1,
+      "toolCallCount": 8
+    }
+  ]
+}
