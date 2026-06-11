@@ -1,4 +1,8 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import type {
   MessagesPageResponse,
   MetaResponse,
@@ -81,19 +85,16 @@ export function useSessionDetail(sessionId: string | undefined) {
   });
 }
 
-export function useSessionMessages(
-  sessionId: string | undefined,
-  cursor: number,
-  limit = 200,
-) {
-  return useQuery({
-    queryKey: ["session-messages", sessionId, cursor, limit],
-    queryFn: () =>
+export function useSessionMessages(sessionId: string | undefined, limit = 200) {
+  return useInfiniteQuery({
+    queryKey: ["session-messages", sessionId, limit],
+    queryFn: ({ pageParam }) =>
       apiGet<MessagesPageResponse>(
-        `/api/sessions/${sessionId}/messages?cursor=${cursor}&limit=${limit}`,
+        `/api/sessions/${sessionId}/messages?cursor=${pageParam}&limit=${limit}`,
       ),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
     enabled: Boolean(sessionId),
-    placeholderData: (previous) => previous,
   });
 }
 
