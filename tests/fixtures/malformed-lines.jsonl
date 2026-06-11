@@ -1,0 +1,8 @@
+{"type":"user","uuid":"bbbb0000-0000-0000-0000-000000000001","sessionId":"22222222-2222-3333-4444-555555555555","timestamp":"2026-06-02T09:00:00.000Z","message":{"role":"user","content":"hello"}}
+this line is not json at all {{{
+{"type":"assistant","uuid":"bbbb0000-0000-0000-0000-000000000002","sessionId":"22222222-2222-3333-4444-555555555555","timestamp":"2026-06-02T09:00:05.000Z","message":{"id":"msg_b1","role":"assistant","model":"claude-sonnet-4-6","content":[{"type":"text","text":"hi"}],"usage":{"input_tokens":10,"output_tokens":5}}}
+{"truncated": "json with no closing brace"
+["valid json but an array, not a record"]
+42
+{"noTypeField": true}
+{"type":"user","uuid":"bbbb0000-0000-0000-0000-000000000003","sessionId":"22222222-2222-3333-4444-555555555555","timestamp":"2026-06-02T09:01:00.000Z","message":{"role":"user","content":"still works after garbage"}}
