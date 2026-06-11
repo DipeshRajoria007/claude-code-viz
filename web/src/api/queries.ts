@@ -4,6 +4,8 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import type {
+  MemoryDetailResponse,
+  MemoryGraphResponse,
   MessagesPageResponse,
   MetaResponse,
   ModelSummary,
@@ -117,6 +119,27 @@ export function useToolsAnalytics() {
   return useQuery({
     queryKey: ["analytics-tools"],
     queryFn: () => apiGet<ToolsAnalyticsResponse>("/api/analytics/tools"),
+  });
+}
+
+export function useMemoryGraph() {
+  return useQuery({
+    queryKey: ["memory-graph"],
+    queryFn: () => apiGet<MemoryGraphResponse>("/api/memory"),
+  });
+}
+
+export function useMemoryDetail(
+  project: string | undefined,
+  file: string | undefined,
+) {
+  return useQuery({
+    queryKey: ["memory", project, file],
+    queryFn: () =>
+      apiGet<MemoryDetailResponse>(
+        `/api/memory/${encodeURIComponent(project ?? "")}/${encodeURIComponent(file ?? "")}`,
+      ),
+    enabled: Boolean(project && file),
   });
 }
 
