@@ -1,6 +1,7 @@
 import { NavLink, Route, Routes } from "react-router-dom";
 import { useMeta } from "./api/queries";
 import { ScanProgressBanner } from "./components/ScanProgressBanner";
+import MemoryPage from "./pages/MemoryPage";
 import OverviewPage from "./pages/OverviewPage";
 import SessionReplayPage from "./pages/SessionReplayPage";
 import SessionsPage from "./pages/SessionsPage";
@@ -10,6 +11,7 @@ import UsagePage from "./pages/UsagePage";
 const NAV = [
   { to: "/", label: "Overview", end: true },
   { to: "/sessions", label: "Sessions", end: false },
+  { to: "/memory", label: "Memory", end: false },
   { to: "/usage", label: "Usage & Cost", end: false },
   { to: "/tools", label: "Tools & Agents", end: false },
 ];
@@ -60,6 +62,8 @@ export default function App() {
             <Route path="/" element={<OverviewPage />} />
             <Route path="/sessions" element={<SessionsPage />} />
             <Route path="/sessions/:id" element={<SessionReplayPage />} />
+            <Route path="/memory" element={<MemoryPage />} />
+            <Route path="/memory/:project/:file" element={<MemoryPage />} />
             <Route path="/usage" element={<UsagePage />} />
             <Route path="/tools" element={<ToolsPage />} />
           </Routes>
