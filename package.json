@@ -1,6 +1,6 @@
 {
   "name": "claude-code-viz",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Local web dashboard for your Claude Code data (~/.claude) — usage & cost analytics, session replay, activity heatmap. 100% local & read-only.",
   "keywords": [
     "claude",
@@ -33,7 +33,8 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "test": "vitest run --passWithNoTests",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run typecheck && npm run lint && npm test && npm run build"
   },
   "engines": {
     "node": ">=20"

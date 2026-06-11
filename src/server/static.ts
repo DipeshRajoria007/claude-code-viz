@@ -38,11 +38,13 @@ async function serveFrom(webDir: string, c: Context): Promise<Response> {
   let filePath = join(webDir, safePath);
   if (!filePath.startsWith(webDir)) filePath = join(webDir, "index.html");
 
-  let body: Buffer | null = await tryRead(filePath, safePath === "/");
-  let servedPath = filePath;
+  // requests for "/" or SPA routes resolve to index.html — the content type
+  // must come from the file actually served, not the requested path
+  let servedPath = safePath === "/" ? join(webDir, "index.html") : filePath;
+  let body = await tryRead(servedPath);
   if (body === null) {
     servedPath = join(webDir, "index.html");
-    body = await tryRead(servedPath, true);
+    body = await tryRead(servedPath);
   }
   if (body === null) return c.html(PLACEHOLDER);
 
@@ -56,13 +58,9 @@ async function serveFrom(webDir: string, c: Context): Promise<Response> {
   return c.body(new Uint8Array(body));
 }
 
-async function tryRead(
-  filePath: string,
-  isDir: boolean,
-): Promise<Buffer | null> {
+async function tryRead(filePath: string): Promise<Buffer | null> {
   try {
-    const target = isDir ? join(filePath, "index.html") : filePath;
-    return await readFile(target);
+    return await readFile(filePath);
   } catch {
     return null;
   }
