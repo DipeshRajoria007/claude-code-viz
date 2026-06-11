@@ -35,6 +35,139 @@ export interface MessageBlock {
   rawType?: string;
 }
 
+// ---------------------------------------------------------------------------
+// REST API contracts (/api/*)
+// ---------------------------------------------------------------------------
+
+export interface MetaResponse {
+  appVersion: string;
+  claudeDir: string;
+  cacheDir: string;
+  pricingAsOf: string;
+  redact: boolean;
+}
+
+export interface ScanStatusResponse {
+  state: "idle" | "scanning";
+  filesTotal: number;
+  filesDone: number;
+  errors: number;
+  startedAt: string | null;
+  lastCompletedAt: string | null;
+}
+
+export interface DailyActivity {
+  date: string;
+  sessions: number;
+  messages: number;
+  toolCalls: number;
+  usage: Usage;
+  costUsd: number;
+}
+
+export interface StatsCacheDaily {
+  date: string;
+  messageCount: number;
+  sessionCount: number;
+  toolCallCount: number;
+}
+
+export interface TotalsSummary {
+  sessions: number;
+  messages: number;
+  toolCalls: number;
+  usage: Usage;
+  costUsd: number;
+  unpricedModels: string[];
+}
+
+export interface SessionSummary {
+  sessionId: string;
+  projectDir: string;
+  cwd: string | null;
+  title: string | null;
+  firstTs: string | null;
+  lastTs: string | null;
+  messages: number;
+  toolCalls: number;
+  models: string[];
+  /** Estimated; null when every model in the session is unpriced. */
+  costUsd: number | null;
+}
+
+export interface OverviewResponse {
+  totals: TotalsSummary;
+  daily: DailyActivity[];
+  /** Claude Code's own stats cache — first paint while the scan runs. */
+  statsCacheDaily: StatsCacheDaily[] | null;
+  recentSessions: SessionSummary[];
+}
+
+export interface SessionsPageResponse {
+  items: SessionSummary[];
+  nextCursor: number | null;
+  total: number;
+}
+
+export interface SessionDetailResponse extends SessionSummary {
+  gitBranches: string[];
+  versions: string[];
+  entrypoints: string[];
+  counts: {
+    user: number;
+    assistant: number;
+    toolUse: number;
+    toolResultErrors: number;
+    sidechain: number;
+    parseErrors: number;
+    records: number;
+  };
+  toolCallsByName: Record<string, number>;
+  usageByModel: Record<string, Usage>;
+  unknownTypes: Record<string, number>;
+}
+
+export interface MessagesPageResponse {
+  items: ApiMessage[];
+  nextCursor: number | null;
+  total: number;
+}
+
+export interface ProjectSummary {
+  projectDir: string;
+  cwd: string | null;
+  sessions: number;
+  messages: number;
+  usage: Usage;
+  costUsd: number;
+  lastActive: string | null;
+}
+
+export interface UsageBucket {
+  key: string;
+  usage: Usage;
+  costUsd: number | null;
+  cacheHitRate: number;
+}
+
+export interface ModelSummary {
+  model: string;
+  usage: Usage;
+  costUsd: number | null;
+}
+
+export interface ToolsAnalyticsResponse {
+  tools: Array<{ name: string; count: number }>;
+  hooks: Array<{
+    name: string;
+    success: number;
+    failure: number;
+    totalDurationMs: number;
+    avgDurationMs: number;
+  }>;
+  agents: Array<{ name: string; count: number }>;
+}
+
 /** A conversation message normalized for the replay UI. */
 export interface ApiMessage {
   /** Position of the source record in the transcript file (0-based). */
