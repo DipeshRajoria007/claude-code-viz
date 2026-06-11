@@ -1,0 +1,6 @@
+{"type":"user","uuid":"cccc0000-0000-0000-0000-000000000001","sessionId":"33333333-2222-3333-4444-555555555555","timestamp":"2026-06-03T12:00:00.000Z","message":{"role":"user","content":"test unknown record handling"}}
+{"type":"hologram-checkpoint","uuid":"cccc0000-0000-0000-0000-000000000002","sessionId":"33333333-2222-3333-4444-555555555555","payload":{"future":"field"}}
+{"type":"hologram-checkpoint","uuid":"cccc0000-0000-0000-0000-000000000003","sessionId":"33333333-2222-3333-4444-555555555555","payload":{"future":"field2"}}
+{"type":"quantum-sync","sessionId":"33333333-2222-3333-4444-555555555555","data":[1,2,3]}
+{"type":"queue-operation","operation":"enqueue","timestamp":"2026-06-03T12:00:02.000Z","sessionId":"33333333-2222-3333-4444-555555555555"}
+{"type":"assistant","uuid":"cccc0000-0000-0000-0000-000000000004","sessionId":"33333333-2222-3333-4444-555555555555","timestamp":"2026-06-03T12:00:10.000Z","message":{"id":"msg_c1","role":"assistant","model":"claude-future-9","content":[{"type":"text","text":"ok"},{"type":"crystal","facets":12}],"usage":{"input_tokens":20,"output_tokens":10}}}
