@@ -26,3 +26,14 @@ jobs:
         run: |
           node dist/cli.js --version
           node dist/cli.js --help
+          test -f dist/web/index.html
+      - name: Server smoke test
+        run: |
+          node dist/cli.js --dir tests/fixtures/claude-dir --cache-dir /tmp/ccv-ci-cache --no-open --port 4123 &
+          SERVER_PID=$!
+          sleep 2
+          curl -fsS http://127.0.0.1:4123/api/meta | grep -q appVersion
+          curl -fsS http://127.0.0.1:4123/api/overview | grep -q totals
+          curl -fsS http://127.0.0.1:4123/ | grep -qi '<html'
+          test "$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: evil.example.com' http://127.0.0.1:4123/api/meta)" = "403"
+          kill $SERVER_PID
