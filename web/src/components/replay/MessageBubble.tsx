@@ -86,11 +86,8 @@ export function MessageBubble(props: { message: ApiMessage }) {
       </div>
       <div className="space-y-2">
         {message.blocks.map((block, index) => (
-          <Block
-            key={`${message.uuid}-${index}`}
-            block={block}
-            role={message.role}
-          />
+          // biome-ignore lint/suspicious/noArrayIndexKey: transcript blocks are immutable and never reorder
+          <Block key={index} block={block} role={message.role} />
         ))}
       </div>
     </div>
