@@ -42,19 +42,25 @@ export default function OverviewPage() {
     totals.usage.cacheCreate5m +
     totals.usage.cacheCreate1h;
 
-  // Until the first scan lands, fall back to Claude Code's own stats cache.
-  const heatmapDays: HeatmapDay[] =
-    daily.length > 0
-      ? daily.map((day) => ({
-          date: day.date,
-          value: day.messages,
-          label: `${day.date}: ${formatCount(day.messages)} messages, ${formatCount(day.toolCalls)} tool calls, ${formatUsd(day.costUsd)}`,
-        }))
-      : (statsCacheDaily ?? []).map((day) => ({
-          date: day.date,
-          value: day.messageCount,
-          label: `${day.date}: ${formatCount(day.messageCount)} messages (from Claude Code stats cache)`,
-        }));
+  // Merge both sources: Claude Code prunes old transcripts (~30 days), so its
+  // own stats cache often remembers further back than the scan can see. Days
+  // covered by scanned transcripts win (they carry tool calls and cost).
+  const heatmapByDate = new Map<string, HeatmapDay>();
+  for (const day of statsCacheDaily ?? []) {
+    heatmapByDate.set(day.date, {
+      date: day.date,
+      value: day.messageCount,
+      label: `${day.date}: ${formatCount(day.messageCount)} messages (from Claude Code stats cache)`,
+    });
+  }
+  for (const day of daily) {
+    heatmapByDate.set(day.date, {
+      date: day.date,
+      value: day.messages,
+      label: `${day.date}: ${formatCount(day.messages)} messages, ${formatCount(day.toolCalls)} tool calls, ${formatUsd(day.costUsd)}`,
+    });
+  }
+  const heatmapDays: HeatmapDay[] = [...heatmapByDate.values()];
 
   const chartData = daily.map((day) => ({
     date: day.date.slice(5),

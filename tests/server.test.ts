@@ -208,6 +208,28 @@ describe("analytics endpoints", () => {
 });
 
 describe("static serving", () => {
+  it("serves the SPA root as text/html (browsers must render, not download)", async () => {
+    const { mkdirSync, writeFileSync } = await import("node:fs");
+    const webDir = join(cacheDir, "web-assets");
+    mkdirSync(webDir, { recursive: true });
+    writeFileSync(join(webDir, "index.html"), "<html><body>app</body></html>");
+    const withAssets = createServer({
+      claudeDir: FIXTURE_DIR,
+      cacheDir,
+      appVersion: "0.0.0-test",
+      redact: true,
+      webDir,
+    });
+    for (const path of ["/", "/sessions", "/sessions/abc"]) {
+      const response = await withAssets.app.request(path, {
+        headers: { host: "127.0.0.1" },
+      });
+      expect(response.status).toBe(200);
+      expect(response.headers.get("content-type")).toContain("text/html");
+      expect(await response.text()).toContain("app");
+    }
+  });
+
   it("serves a placeholder when web assets are missing", async () => {
     const response = await server.app.request("/", {
       headers: { host: "127.0.0.1" },
