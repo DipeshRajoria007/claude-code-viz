@@ -17,7 +17,7 @@ export default function MemoryPage() {
   const graph = useMemoryGraph();
   const { project, file } = useParams<{ project: string; file: string }>();
   const detail = useMemoryDetail(project, file);
-  const [view, setView] = useState<ViewMode>("cards");
+  const [view, setView] = useState<ViewMode>("graph");
   const [activeTypes, setActiveTypes] = useState<Set<MemoryType>>(new Set());
 
   const memories = graph.data?.memories ?? [];
@@ -111,7 +111,7 @@ export default function MemoryPage() {
             {formatCount(graph.data.edges.length)} links
           </span>
           <div className="flex overflow-hidden rounded-md border border-zinc-700">
-            {(["cards", "graph"] as const).map((mode) => (
+            {(["graph", "cards"] as const).map((mode) => (
               <button
                 key={mode}
                 type="button"
