@@ -168,6 +168,68 @@ export interface ToolsAnalyticsResponse {
   agents: Array<{ name: string; count: number }>;
 }
 
+// ---------------------------------------------------------------------------
+// Memory (/api/memory)
+// ---------------------------------------------------------------------------
+
+export type MemoryType =
+  | "project"
+  | "feedback"
+  | "reference"
+  | "user"
+  | "unknown";
+
+export interface MemorySummary {
+  /** `${projectDir}/${fileName}` — stable id. */
+  id: string;
+  projectDir: string;
+  fileName: string;
+  title: string;
+  /** Canonical [[link]] resolution key (frontmatter name or filename stem). */
+  slug: string;
+  description: string | null;
+  type: MemoryType;
+  originSessionId: string | null;
+  hasFrontmatter: boolean;
+  /** Listed in this directory's MEMORY.md index. */
+  indexed: boolean;
+  indexSummary: string | null;
+  sizeBytes: number;
+  modifiedAt: string;
+}
+
+export interface MemoryEdge {
+  sourceId: string;
+  targetId: string;
+  /** The raw [[slug]] text that created this edge. */
+  slug: string;
+}
+
+export interface MemoryProjectSummary {
+  projectDir: string;
+  count: number;
+  countsByType: Partial<Record<MemoryType, number>>;
+  hasIndex: boolean;
+  /** MEMORY.md entries pointing at files that don't exist. */
+  orphanIndexEntries: Array<{ title: string; target: string }>;
+  lastModified: string | null;
+  totalBytes: number;
+}
+
+export interface MemoryGraphResponse {
+  memories: MemorySummary[];
+  edges: MemoryEdge[];
+  danglingLinks: Array<{ sourceId: string; slug: string }>;
+  projects: MemoryProjectSummary[];
+}
+
+export interface MemoryDetailResponse extends MemorySummary {
+  /** Markdown body, frontmatter stripped, redacted server-side. */
+  body: string;
+  outgoing: Array<{ slug: string; targetId: string | null }>;
+  backlinks: Array<{ sourceId: string; title: string; projectDir: string }>;
+}
+
 /** A conversation message normalized for the replay UI. */
 export interface ApiMessage {
   /** Position of the source record in the transcript file (0-based). */

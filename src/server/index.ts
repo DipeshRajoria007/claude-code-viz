@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { analyticsRoutes, projectRoutes } from "./routes/analytics.js";
+import { memoryRoutes } from "./routes/memory.js";
 import { metaRoutes } from "./routes/meta.js";
 import { overviewRoutes } from "./routes/overview.js";
 import { scanRoutes } from "./routes/scan.js";
@@ -30,6 +31,7 @@ export function createServer(options: CreateServerOptions): Server {
   app.route("/api/sessions", sessionRoutes(state));
   app.route("/api/projects", projectRoutes(state));
   app.route("/api/analytics", analyticsRoutes(state));
+  app.route("/api/memory", memoryRoutes(state));
   app.all("/api/*", (c) => c.json({ error: "not found" }, 404));
   mountStatic(app, options.webDir);
 
